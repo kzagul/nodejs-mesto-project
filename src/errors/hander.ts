@@ -12,7 +12,7 @@ const errorsHandler: ErrorRequestHandler = (
 ) => {
   const statusCode = err.statusCode || statusCodes.Default;
   const message = statusCode === statusCodes.Default
-    ? 'Ошибка по умолчанию'
+    ? 'На сервере произошла ошибка'
     : err.message;
 
   res.status(statusCode).send({
