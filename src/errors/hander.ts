@@ -1,15 +1,17 @@
-import { ErrorRequestHandler } from 'express';
-import { statusCodes, CustomError } from './types';
-import { Request, Response, NextFunction } from 'express';
+import {
+  ErrorRequestHandler, Request, Response, NextFunction,
+} from 'express';
+import statusCodes from './statusCodes';
+import CustomError from './types';
 
 const errorsHandler: ErrorRequestHandler = (
-  err: CustomError, 
+  err: CustomError,
   _req: Request,
   res: Response,
-  next: NextFunction
-  ) => {
-  const statusCode = err.statusCode || statusCodes.default;
-  const message = statusCode === statusCodes.default
+  next: NextFunction,
+) => {
+  const statusCode = err.statusCode || statusCodes.Default;
+  const message = statusCode === statusCodes.Default
     ? 'Ошибка по умолчанию'
     : err.message;
 
@@ -21,4 +23,4 @@ const errorsHandler: ErrorRequestHandler = (
   next();
 };
 
-export { errorsHandler }
+export default errorsHandler;

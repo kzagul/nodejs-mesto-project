@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UpdateQuery } from 'mongoose';
 import User, { IUser } from '../models/user.model';
-import { NotFoundError, BadRequestError, statusCodes} from '../errors/types'
+import { NotFoundError, BadRequestError, statusCodes } from '../errors';
 
 class UserController {
   static get(req: Request, res: Response, next: NextFunction) {
@@ -25,10 +25,10 @@ class UserController {
     User.create({ name, about, avatar })
       .then((user) => res.send(user))
       .catch((error) => {
-        if (error.statusCode === statusCodes.badRequest) {
+        if (error.statusCode === statusCodes.BadRequest) {
           return next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
         }
-        return next
+        return next;
       });
   }
 
@@ -39,12 +39,11 @@ class UserController {
       .orFail(() => new NotFoundError('Пользователь с указанным _id не найден'))
       .then((user) => res.send(user))
       .catch((err) => {
-        if (err.statusCode === statusCodes.badRequest) {
+        if (err.statusCode === statusCodes.BadRequest) {
           return next(new BadRequestError('Переданы некорректные данные при обновлении пользователя.'));
         }
-        return  next
-      }
-    );
+        return next;
+      });
   }
 
   static updateMe(req: Request, res: Response, next: NextFunction) {

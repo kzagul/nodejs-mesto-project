@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import Card, { ICard } from '../models/card.model';
-import { NotFoundError, BadRequestError, statusCodes } from '../errors/types'
+import { NotFoundError, BadRequestError, statusCodes } from '../errors';
 
 class CardController {
   static get(req: Request, res: Response, next: NextFunction) {
@@ -13,13 +13,15 @@ class CardController {
     // @ts-expect-error
     const owner = req.user._id;
     const { name, link, likes }: Pick<ICard, 'name' | 'link' | 'likes'> = req.body;
-    Card.create({name, link, owner, likes})
+    Card.create({
+      name, link, owner, likes,
+    })
       .then((card) => res.json(card))
       .catch((error) => {
-        if (error.statusCode === statusCodes.badRequest) {
+        if (error.statusCode === statusCodes.BadRequest) {
           return next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
         }
-        return next
+        return next;
       });
   }
 

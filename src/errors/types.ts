@@ -1,44 +1,15 @@
-enum statusCodes {
-    badRequest = 400,
-    notFound = 404,
-    default = 500,
-};
+import statusCodes from './statusCodes';
 
 class CustomError extends Error {
-    statusCode: number;
+  statusCode: number;
 
-    constructor(message: string | undefined) {
-        super(message);
-        this.name = this.constructor.name;
-        this.statusCode = statusCodes.badRequest 
-            | statusCodes.notFound 
-            | statusCodes.default
-    }
+  constructor(message: string | undefined) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = statusCodes.BadRequest
+            || statusCodes.NotFound
+            || statusCodes.Default;
+  }
 }
 
-class BadRequestError extends CustomError {
-    statusCode: number;
-  
-    constructor(message: string | undefined) {
-      super(message);
-      this.name = this.constructor.name;
-      this.statusCode = statusCodes.badRequest;
-    }
-}
-
-class NotFoundError extends CustomError {
-    statusCode: number;
-
-    constructor(message: string | undefined) {
-        super(message);
-        this.name = this.constructor.name;
-        this.statusCode = statusCodes.notFound;
-    }
-}
-
-export { 
-    statusCodes,
-    CustomError,
-    BadRequestError,
-    NotFoundError
-}
+export default CustomError;
