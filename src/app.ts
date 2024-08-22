@@ -1,12 +1,22 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { errors } from 'celebrate';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import {
   userRoutes,
   cardRoutes,
 } from './routes';
 import { errorsHandler } from './errors';
-import authMe from './middlewares/auth';
+import {
+  auth,
+  requestLogger,
+  errorLogger,
+  notFoundPage,
+  signInValidation,
+  signUpValidation,
+} from './middlewares';
+import { UserController } from './controllers';
 
 const {
   PORT = 3000,
@@ -16,11 +26,18 @@ const {
 const app = express();
 
 app
+  .use(cookieParser())
+  .use(helmet())
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
-  .use(authMe)
+  .use(requestLogger)
+  .post('/signin', signInValidation(), UserController.login)
+  .post('/signup', signUpValidation(), UserController.post)
+  .use(auth)
   .use('/users', userRoutes)
   .use('/cards', cardRoutes)
+  .use('*', notFoundPage)
+  .use(errorLogger)
   .use(errors())
   .use(errorsHandler);
 
