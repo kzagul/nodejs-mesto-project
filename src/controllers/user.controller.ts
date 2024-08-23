@@ -7,6 +7,8 @@ import {
   NotFoundError, BadRequestError, statusCodes, CoincidenceError, UnauthorizedError,
 } from '../errors';
 
+const { SECRET_KEY = 'secret-key' } = process.env;
+
 class UserController {
   static get(req: Request, res: Response, next: NextFunction) {
     User.find({})
@@ -99,7 +101,7 @@ class UserController {
 
     return User.findUserByCredentials(email, password)
       .then((user) => {
-        const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: '7d' });
+        const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
 
         res.cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,

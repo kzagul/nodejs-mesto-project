@@ -32,7 +32,7 @@ userRoutes.get(
   '/:userId',
   celebrate({
     params: Joi.object().keys({
-      userId: Joi.string().alphanum().length(24).required(),
+      userId: Joi.string().hex().length(24).required(),
     }),
     cookies: Joi.object()
       .keys({

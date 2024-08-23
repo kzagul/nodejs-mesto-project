@@ -41,7 +41,7 @@ cardRoutes.delete(
   '/:cardId',
   celebrate({
     params: {
-      cardId: Joi.string().alphanum().length(24).required(),
+      cardId: Joi.string().length(24).hex().required(),
     },
     cookies: Joi.object()
       .keys({
@@ -56,7 +56,7 @@ cardRoutes.put(
   '/:cardId/likes',
   celebrate({
     params: {
-      cardId: Joi.string().alphanum().length(24).required(),
+      cardId: Joi.string().length(24).hex().required(),
     },
     cookies: Joi.object()
       .keys({
@@ -71,7 +71,7 @@ cardRoutes.delete(
   '/:cardId/likes',
   celebrate({
     params: {
-      cardId: Joi.string().alphanum().length(24).required(),
+      cardId: Joi.string().length(24).hex().required(),
     },
     cookies: Joi.object()
       .keys({
